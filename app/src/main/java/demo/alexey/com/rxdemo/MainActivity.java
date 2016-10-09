@@ -23,25 +23,30 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         tvSimpleMain = (TextView) findViewById(R.id.tv_simple_main);
         tvComplicatMain = (TextView) findViewById(R.id.tv_complicat_main);
+        //最简单的rxjava测试
         simpleTest();
+        //精简过后的rxjava
         complicatTest();
 
     }
-    //操作符测试
+    //点击按钮后,对操作符测试
     public  void onOpraterClicked(View v) {
         Observable.just(mDatas)
+                //输入数组并且一条条拿给subscribe
                 .flatMap(new Func1<String[], Observable<String>>() {
                     @Override
                     public Observable<String> call(String[] strings) {
                         return Observable.from(strings);
                     }
                 })
+                //过滤字符串为data1的数据
                 .filter(new Func1<String, Boolean>() {
                     @Override
                     public Boolean call(String s) {
                         return !("data1".equals(s));
                     }
                 })
+                //限定输出数据的数量
                 .take(3)
                 .subscribe(new Action1<String>() {
                     @Override
